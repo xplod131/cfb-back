@@ -20,7 +20,7 @@ jobs:
       run: docker network create app_network
 
     - name: Run linter
-      run: tools/php-cs-fixer/vendor/bin/php-cs-fixer fix src/ --dry-run --stop-on-violation
+      run: php php-cs-fixer.phar fix src/ --dry-run --stop-on-violation
 
     - name: Run tests
       run: php bin/phpunit
