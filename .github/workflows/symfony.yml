@@ -16,11 +16,8 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Create app_network
-      run: docker network create app_network
+    - name: Run tests
+      run: php bin/phpunit
 
     - name: Run linter
       run: php php-cs-fixer.phar fix src/ --dry-run --stop-on-violation
-
-    - name: Run tests
-      run: php bin/phpunit
