@@ -30,8 +30,6 @@ COPY . /var/www/html
 # Install dependencies
 RUN composer install --optimize-autoloader
 
-RUN php bin/console doctrine:migrations:diff
-
 # Expose port 8000
 EXPOSE 8000
 

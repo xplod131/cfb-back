@@ -45,9 +45,10 @@ services:
   web:
     build: .
     command: bash -c "composer install && \
-      php bin/console doctrine:migrations:status | grep 'Already applied' || \
-      (php bin/console doctrine:migrations:migrate --no-interaction && \
-      php -S 0.0.0.0:8000 -t public)"
+      php bin/console doctrine:migrations:diff --no-interaction && \
+      php bin/console doctrine:migrations:migrate --no-interaction && \
+      php bin/console api:openapi:export --output=public/api/docs.jsonld && \
+      php -S 0.0.0.0:8000 -t public"
     volumes:
       - .:/app
     ports:
