@@ -28,7 +28,7 @@ WORKDIR /var/www/html
 COPY . /var/www/html
 
 # Install dependencies
-RUN composer install --optimize-autoloader
+RUN composer install
 
 # Expose port 8000
 EXPOSE 8000

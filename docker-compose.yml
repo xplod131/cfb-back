@@ -2,21 +2,25 @@ version: '3'
 services:
   db:
     image: postgres:15-alpine
-    restart: always
     environment:
-      POSTGRES_USER: yourusername
-      POSTGRES_PASSWORD: yourpassword
-      POSTGRES_DB: yourdatabase
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: tododb
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - app_network
+    healthcheck:
+      test: [ "CMD", "pg_isready -d tododb -U admin"]
+      start_period: 2s
+      interval: 10s
+      timeout: 15s
+      retries: 10
   web:
     build: .
     command: bash -c "composer install && \
-      php bin/console doctrine:migrations:diff --no-interaction && \
       php bin/console doctrine:migrations:migrate --no-interaction && \
       php bin/console api:openapi:export --output=public/api/docs.jsonld && \
       php -S 0.0.0.0:8000 -t public"
@@ -27,7 +31,7 @@ services:
     depends_on:
       - db
     environment:
-      DATABASE_URL: postgresql://yourusername:yourpassword@db:5432/yourdatabase
+      DATABASE_URL: postgresql://admin:admin@db:5432/tododb
     networks:
       - app_network
 volumes:
